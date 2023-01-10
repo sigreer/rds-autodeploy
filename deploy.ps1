@@ -1,6 +1,3 @@
-
-
-
 . \deployment-variables.ps1   # Import the variables for the whole environment
 
 # Set permissive enough execution policy
@@ -47,27 +44,27 @@ Install-ADDSForest `
 }
 
 # Import CSV of App Users to Active Directory and Assign to AppUsers Group
-workflow Add-TatemsUsers 
+workflow Add-OrgADUsers 
 {
 Import-Module ActiveDirectory
 $userslist = Import-Csv `
     -Path $usersfile `
     -Delimiter "," `
     -Header Name,DisplayName,GivenName,Surname,Company,Organization,OfficePhone,HomeDrive,PasswordNeverExpires,Type,UserPrincipalName
-    foreach ($tatemsuser in $userslist) {
+    foreach ($activedirectoryuser in $userslist) {
         New-ADUser `
-            -Name $tatemesuser.Name `
-            -DisplayName $tatemsuser.DisplayName `
-            -GivenName $tatemsuser.GivenName `
-            -Surname $tatemsuser.Surname `
-            -Company $tatemsuser.Company `
-            -Organization $tatemsuser.Organization `
-            -OfficePhone $tatemsuser.OfficePhone `
-            -HomeDrive $tatemsuser.HomeDrive `
-            -PasswordNeverExpires $tatemsuser.PasswordNeverExpires `
-            -Type $tatemsuser.Type `
-            -UserPrincipalName $tatemsuser.UserPrincipalName
-        New-ADGroupMember -Identity "AppUsers" -Member $tatemsuser.Name
+            -Name $activedirectoryuser.Name `
+            -DisplayName $activedirectoryuser.DisplayName `
+            -GivenName $activedirectoryuser.GivenName `
+            -Surname $activedirectoryuser.Surname `
+            -Company $activedirectoryuser.Company `
+            -Organization $activedirectoryuser.Organization `
+            -OfficePhone $activedirectoryuser.OfficePhone `
+            -HomeDrive $activedirectoryuser.HomeDrive `
+            -PasswordNeverExpires $activedirectoryuser.PasswordNeverExpires `
+            -Type $activedirectoryuser.Type `
+            -UserPrincipalName $activedirectoryuser.UserPrincipalName
+        New-ADGroupMember -Identity "AppUsers" -Member $activedirectoryuser.Name
     }
 }
 
